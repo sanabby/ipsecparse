@@ -33,7 +33,12 @@ class Lexer(object):
     t_KEY.__doc__ = r'^[ \t]+' + _name + r'[ \t]*=[ \t]*'
     
     def t_VALUE(self, token):
-        r'[^ \t\n\#"]+'
+        # from https://wiki.strongswan.org/projects/strongswan/wiki/IdentityParsing
+        # A value can have the string values containing @#
+        # to support parsing and derving specific meaning of what
+        # follows @#, @@ and @
+        # this is specifically true in strongswan based ipsec deployments
+        r'[^ \t\n"]+'
         return token
     
     def t_DOUBLE_QUOTED_VALUE(self, token):
